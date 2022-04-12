@@ -26,7 +26,7 @@ export default function MoviesCast() {
         {cast &&
         mainCast.map(actor => (
           <li key={actor.id}>
-          <img src={actor.profile_path ? `https://image.tmdb.org/t/p/w300_and_h400${actor.profile_path}` : defaultPhoto} alt={actor.name} />
+          <img src={actor.profile_path ? `https://image.tmdb.org/t/p/w300${actor.profile_path}` : defaultPhoto} alt={actor.name} />
           <p className={s.actor}>{actor.original_name}</p>
           <p>Character: {actor.character}</p>
           </li>

@@ -61,7 +61,7 @@ export default function MoviesPage() {
           <li key={movie.id}>
             <Link to={`/movies/${movie.id}`} className={s.link}>
             <img src={movie.poster_path
-              ? `https://image.tmdb.org/t/p/w300_and_h900_bestv2/${movie.poster_path}` : defaultImage} alt={movie.title} />
+              ? `https://image.tmdb.org/t/p/w300/${movie.poster_path}` : defaultImage} alt={movie.title} />
             <h3 className={s.movieName}>{movie.title}</h3>
             <p className={s.subName}>
                 {movie.release_date ? movie.release_date : 'Unknown'}
