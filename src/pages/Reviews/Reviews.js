@@ -5,24 +5,29 @@ import s from './Reviews.module.css';
 
 export default function MoviesReviews() {
   const { movieId } = useParams();
-  const [reviews, setReviews] = useState(null);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    reviewsAPI.fetchMoviesReviews(movieId).then(response => {setReviews(response.results);
+    const getReviews = () => {
+      return reviewsAPI.fetchMoviesReviews(movieId).then(response => {
+        setReviews(response.results);
+        });
+      };
+    getReviews();
   }, [movieId]);
-
   console.log(reviews);
 
   return (
     <>
-      {reviews.length === 0 ? (
-      <p className={s.text}>We don't have any reviews for this movie.</p>) :
+      {reviews.length > 0 ?
         reviews.map(review => (
           <ul key={review.id}>
-            <li>Author: {review.author}</li>
+            <li className={s.author}>Author: {review.author}</li>
             <li>{review.content}</li>
           </ul>
-      ))}
+      )) :
+      (<p className={s.text}>We don't have any reviews for this movie.</p>)
+      }
     </>
   );
-})}
+}

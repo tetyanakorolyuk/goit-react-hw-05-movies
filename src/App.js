@@ -18,20 +18,18 @@ function App() {
     return (
       <>
       <Container>
-      <Suspense fallback={<h1>Loading...</h1>}>
-        <Routes>
+        <Suspense fallback={<h1>Loading...</h1>}>
+          <Routes>
           <Route path="/" element={<AppBar />}>
-            <Route path="/" element={<HomePage />}/>
-            <Route path="/movies" element={<MoviesPage />}/>
-
-          <Route path="movies/:movieId/" element={<MoviesDetailsPage />}>
+            <Route index element={<HomePage />}/>
+            <Route path="movies" element={<MoviesPage />}/>
+            <Route path="movies/:movieId/" element={<MoviesDetailsPage />}>
               <Route path="cast" element={<Cast />} />
               <Route path="reviews" element={<Reviews />} />
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
-
-          <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
+          </Routes>
         </Suspense>
         </Container>
       </>

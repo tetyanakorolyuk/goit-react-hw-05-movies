@@ -7,7 +7,7 @@ export default function HomePage() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    API.fetchTrendyMovies().then((response) => setMovies(response.results));
+    API.fetchTrendingMovies().then((response) => setMovies(response.results));
   }, []);
 
   console.log(movies);
@@ -15,11 +15,17 @@ export default function HomePage() {
   return (
     <>
     <h1 className={s.title}>Trending today</h1>
-    <ul>
+    <ul className={s.gallery}>
       {movies &&
         movies.map(movie => (
           <li key={movie.id}>
-            <Link to={`/movies/${movie.id}`} className={s.link}>{movie.title}</Link>
+            <Link to={`/movies/${movie.id}`} className={s.link}>
+            <img src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`} alt={movie.title} />
+            <h3 className={s.movieName}>{movie.title}</h3>
+            <p className={s.subName}>
+                {movie.release_date ? movie.release_date : 'Unknown'}
+              </p>
+            </Link>
           </li>
         ))}
       </ul>

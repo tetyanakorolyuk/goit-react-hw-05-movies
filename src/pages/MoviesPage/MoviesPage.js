@@ -1,29 +1,27 @@
 import { useState, useEffect } from 'react';
-// import { useSearchParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import * as searchAPI from '../../services/movies-api';
-import { toast } from 'react-toastify';
+import defaultImage from '../../images/defaultImage.jpg';
 import s from './MoviesPage.module.css';
 
 export default function MoviesPage() {
-  // const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
-  // const searchQuery = searchParams.get('query');
 
   useEffect(() => {
     if(query === ""){
       return;
     }
-    searchAPI.fetchSearchMovies(query).then(response => {
-      if(response.length !== []) {
-      console.log(movies);
-      setMovies(response.results);
-      }
-      toast.error('Enter the correct movie name.');
-      return;
+    const getSearchMovies = () => {
+      searchAPI.fetchSearchMovies(query).then(response => {
+        if (response.length === 0) {
+          return setMovies(null);
+        }
+        setMovies(response.results);
       });
-    }, [query]);
+    };
+    getSearchMovies();
+  }, [query]);
 
     const handleChange = e => {
       setQuery(e.currentTarget.value.toLowerCase());
@@ -32,7 +30,6 @@ export default function MoviesPage() {
     const handleSubmit = e => {
       e.preventDefault();
       if (query.trim() === '') {
-        toast.error('Enter movie name.');
         return;
       }
       setQuery('');
@@ -58,15 +55,21 @@ export default function MoviesPage() {
         </form>
       </header>
 
-      {movies && (
-        <ul>
-          {movies.map(movie => (
-            <li key={movie.id}>
-              <Link to={`/movies/${movie.id}`} className={s.link}>{movie.title}</Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className={s.gallery}>
+      {movies &&
+        movies.map(movie => (
+          <li key={movie.id}>
+            <Link to={`/movies/${movie.id}`} className={s.link}>
+            <img src={movie.poster_path
+              ? `https://image.tmdb.org/t/p/w300_and_h900_bestv2/${movie.poster_path}` : defaultImage} alt={movie.title} />
+            <h3 className={s.movieName}>{movie.title}</h3>
+            <p className={s.subName}>
+                {movie.release_date ? movie.release_date : 'Unknown'}
+              </p>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </>
   );
 }

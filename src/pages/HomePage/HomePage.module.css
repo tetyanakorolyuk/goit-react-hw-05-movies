@@ -1,14 +1,27 @@
 .title {
-  font-size: 28px;
+  font-size: 36px;
   color:#FFB6C1;
   text-align: center;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-gap: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
 }
 .link {
   text-decoration: none;
   font-size: 18px;
-  color:#8b2938;
+  font-weight: 500;
+  color:#060606;
 }
-li {
-  margin: 10px;
+.movieName {
+  padding-left: 15px;
+  color: #060606;
 }
-
+.subName{
+  padding-left: 15px;
+  color: #FFB6C1;
+}

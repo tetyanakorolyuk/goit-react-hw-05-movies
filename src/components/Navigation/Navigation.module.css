@@ -1,14 +1,5 @@
 .navLink {
   text-decoration: none;
-  color:#FFB6C1;
   margin-left: 30px;
-  font-size: 40px;
-}
-
-.navLink:active,
-.navLink:focus {
-  text-decoration: none;
-  color:#8b2938;
-  margin-right: 30px;
   font-size: 40px;
 }

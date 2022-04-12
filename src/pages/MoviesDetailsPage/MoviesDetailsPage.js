@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link} from 'react-router-dom';
 import { Outlet } from 'react-router';
 import * as movieAPI from '../../services/movies-api';
+import defaultImage from '../../images/defaultImage.jpg';
 import s from './MoviesDetailsPage.module.css';
 
 export default function MoviesDetails() {
@@ -10,23 +11,27 @@ export default function MoviesDetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    movieAPI.fetchMoviesDetails(movieId).then(response => {
-      setMovies(response.data.results);
+    const getMovieDetail = () => {
+      return movieAPI.fetchMoviesDetails(movieId).then(response => {
+        setMovies(response);
+    });
+  };
+    getMovieDetail();
   }, [movieId]);
 
   console.log(movies);
 
   return (
     <>
-    <button onClick={() => navigate(-1)}>Go back</button>
+    <button onClick={() => navigate(-1)} className={s.navButton}>Go back</button>
       {movies && (
         <>
          <div>
-            {' '}
-            <img src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movies.poster_path}`} alt={movies.title} />
+          <img src={movies.poster_path ? `https://image.tmdb.org/t/p/w300/${movies.poster_path}` : defaultImage} alt={movies.title} />
           </div>
           <div>
-          <h2>{movies.title}({movies.release_date})</h2>
+          <h2>{movies.title}</h2>
+          <p className={s.date}>{movies.release_date}</p>
           <p className={s.text}>User Score: {movies.vote_average * 10}%</p>
           <h3>Overview</h3>
           <p>{movies.overview}</p>
@@ -41,10 +46,10 @@ export default function MoviesDetails() {
           <div>
           <h3>Additional Information:</h3>
           <ul>
-            <li>
+            <li className={s.link}>
              <Link to={`/movies/${movieId}/cast`}>Cast</Link>
             </li>
-            <li>
+            <li className={s.link}>
               <Link to={`/movies/${movieId}/reviews`}>Reviews</Link>
             </li>
           </ul>
@@ -54,5 +59,4 @@ export default function MoviesDetails() {
       )}
     </>
   );
-});
 }
