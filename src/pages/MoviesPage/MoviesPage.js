@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import * as searchAPI from '../../services/movies-api';
 import defaultImage from '../../images/defaultImage.jpg';
 import s from './MoviesPage.module.css';
@@ -7,21 +7,34 @@ import s from './MoviesPage.module.css';
 export default function MoviesPage() {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const searchQuery = searchParams.get("query");
+  const location = useLocation();
 
   useEffect(() => {
-    if(query === ""){
+    let abortController = new AbortController();
+
+    if(searchQuery === ""){
       return;
     }
     const getSearchMovies = () => {
-      searchAPI.fetchSearchMovies(query).then(response => {
+      searchAPI.fetchSearchMovies(searchQuery).then(response => {
         if (response.length === 0) {
           return setMovies(null);
         }
-        setMovies(response.results);
+        if (!abortController.signal.aborted) {
+          setMovies(response.results);
+        }
       });
     };
-    getSearchMovies();
-  }, [query]);
+    if (searchQuery) {
+      getSearchMovies();
+    }
+    return () => {
+      abortController.abort();
+    };
+  }, [searchQuery]);
 
     const handleChange = e => {
       setQuery(e.currentTarget.value.toLowerCase());
@@ -32,6 +45,11 @@ export default function MoviesPage() {
       if (query.trim() === '') {
         return;
       }
+
+      let formData = new FormData(e.currentTarget);
+      let newQuery = formData.get("query");
+      if (!newQuery) return;
+      setSearchParams({ query: newQuery });
       setQuery('');
     }
 
@@ -42,7 +60,8 @@ export default function MoviesPage() {
           <input
           className={s.input}
           type="text"
-          value={query}
+          defaultValue={searchQuery ?? undefined}
+          name="query"
           autoComplete="off"
           autoFocus
           onChange={handleChange}
@@ -59,12 +78,12 @@ export default function MoviesPage() {
       {movies &&
         movies.map(movie => (
           <li key={movie.id}>
-            <Link to={`/movies/${movie.id}`} className={s.link}>
+            <Link to={`/movies/${movie.id}`} className={s.link} state={{ from: location }}>
             <img src={movie.poster_path
               ? `https://image.tmdb.org/t/p/w300/${movie.poster_path}` : defaultImage} alt={movie.title} />
             <h3 className={s.movieName}>{movie.title}</h3>
             <p className={s.subName}>
-                {movie.release_date ? movie.release_date : 'Unknown'}
+                {movie.release_date.slice(0, 4) ? movie.release_date.slice(0, 4) : 'Unknown'}
               </p>
             </Link>
           </li>

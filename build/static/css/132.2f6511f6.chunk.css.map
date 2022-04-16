@@ -1,1 +1,0 @@
-{"version":3,"file":"static/css/132.2f6511f6.chunk.css","mappings":"AAAA,EACE,UACF,CACA,oCACE,WACF,CACA,+BACA,cAAe,CACf,eACA","sources":["pages/MoviesDetailsPage/MoviesDetailsPage.module.css"],"sourcesContent":["a {\n  color: #000000;\n}\n.navButton{\n  margin: 15px;\n}\n.date {\nfont-size: 18px;\nfont-weight: 500;\n}\n"],"names":[],"sourceRoot":""}

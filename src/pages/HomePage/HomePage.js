@@ -23,7 +23,7 @@ export default function HomePage() {
             <img src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`} alt={movie.title} />
             <h3 className={s.movieName}>{movie.title}</h3>
             <p className={s.subName}>
-                {movie.release_date ? movie.release_date : 'Unknown'}
+                {movie.release_date.slice(0, 4) ? movie.release_date.slice(0, 4) : 'Unknown'}
               </p>
             </Link>
           </li>
