@@ -5,14 +5,17 @@ import Container from './components/Container';
 // import HomePage from './pages/HomePage';
 // import MoviesPage from './pages/MoviesPage';
 // import MoviesDetailsPage from './pages/MoviesDetailsPage';
-import Cast from './pages/Cast';
-import Reviews from './pages/Reviews';
-import NotFoundPage from './pages/NotFoundPage';
+// import Cast from './pages/Cast';
+// import Reviews from './pages/Reviews';
+// import NotFoundPage from './pages/NotFoundPage';
 // import './App.css';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const MoviesPage = lazy(() => import('./pages/MoviesPage'));
 const MoviesDetailsPage = lazy(() => import('./pages/MoviesDetailsPage'));
+const Cast = lazy(() => import('./pages/Cast'));
+const Reviews = lazy(() => import('./pages/Reviews'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function App() {
     return (
